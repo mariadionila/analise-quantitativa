@@ -206,7 +206,7 @@ if st.sidebar.button("Executar Análise CAPM"):
 
     # resultados
 
-    st.subheader("📊 Resultado Final do CAPM")
+    st.subheader("Resultado Final do CAPM")
 
     st.dataframe(
         df_resultados,
@@ -215,7 +215,7 @@ if st.sidebar.button("Executar Análise CAPM"):
 
     # métricas gerais
 
-    st.subheader("📌 Estatísticas Gerais")
+    st.subheader(" Estatísticas Gerais")
 
     col1, col2, col3 = st.columns(3)
 
@@ -245,7 +245,7 @@ if st.sidebar.button("Executar Análise CAPM"):
 
     # gráfico beta
 
-    st.subheader("📉 Beta dos Ativos")
+    st.subheader(" Beta dos Ativos")
 
     fig1, ax1 = plt.subplots(figsize=(10, 5))
 
@@ -262,7 +262,7 @@ if st.sidebar.button("Executar Análise CAPM"):
 
     # gráfico retorno esperado
 
-    st.subheader("📈 Retorno Esperado")
+    st.subheader(" Retorno Esperado")
 
     fig2, ax2 = plt.subplots(figsize=(10, 5))
 

@@ -5,9 +5,7 @@ import numpy as np
 import statsmodels.api as sm
 import matplotlib.pyplot as plt
 
-# =========================================================
-# CONFIGURAÇÃO DA PÁGINA
-# =========================================================
+# configuração da página
 
 st.set_page_config(
     page_title="Fase I - CAPM",
@@ -17,15 +15,11 @@ st.set_page_config(
 st.title("📈 Fase I - Filtro de Risco e Econometria")
 st.markdown("## Modelo CAPM para Seleção de Ativos")
 
-# =========================================================
-# PARÂMETROS
-# =========================================================
+# parâmetros
 
 st.sidebar.header("Parâmetros da Análise")
 
-# =========================================================
-# LISTA DE ATIVOS DISPONÍVEIS
-# =========================================================
+# lista de ativos disponíveis
 
 lista_ativos = [
     "PETR4.SA",
@@ -42,9 +36,7 @@ lista_ativos = [
     "LREN3.SA"
 ]
 
-# =========================================================
-# SELEÇÃO DOS ATIVOS
-# =========================================================
+# seleção dos ativos
 
 ativos = st.sidebar.multiselect(
     "Selecione os ativos",
@@ -82,17 +74,13 @@ st.sidebar.markdown("### Ativos analisados")
 for ativo in ativos:
     st.sidebar.write(ativo)
 
-# =========================================================
-# BOTÃO
-# =========================================================
+# botão
 
 if st.sidebar.button("Executar Análise CAPM"):
 
     st.subheader("📥 Coletando Dados...")
 
-    # =====================================================
-    # DOWNLOAD BENCHMARK
-    # =====================================================
+    # download benchmark
 
     dados_benchmark = yf.download(
         benchmark,
@@ -107,23 +95,17 @@ if st.sidebar.button("Executar Análise CAPM"):
         .dropna()
     )
 
-    # =====================================================
-    # LISTA DE RESULTADOS
-    # =====================================================
+    # lista de resultados
 
     resultados = []
 
-    # =====================================================
-    # LOOP DOS ATIVOS
-    # =====================================================
+    # loop dos ativos
 
     for ativo in ativos:
 
         try:
 
-            # =============================================
-            # DOWNLOAD DOS DADOS
-            # =============================================
+            # download dos dados
 
             dados_ativo = yf.download(
                 ativo,
@@ -132,9 +114,7 @@ if st.sidebar.button("Executar Análise CAPM"):
                 progress=False
             )
 
-            # =============================================
-            # RETORNOS
-            # =============================================
+            # retornos
 
             retorno_ativo = (
                 dados_ativo["Close"]
@@ -142,9 +122,7 @@ if st.sidebar.button("Executar Análise CAPM"):
                 .dropna()
             )
 
-            # =============================================
-            # DATAFRAME CONJUNTO
-            # =============================================
+            # dataframe conjunto
 
             df = pd.concat(
                 [retorno_ativo, retorno_mercado],
@@ -156,9 +134,7 @@ if st.sidebar.button("Executar Análise CAPM"):
                 "Mercado"
             ]
 
-            # =============================================
-            # REGRESSÃO CAPM
-            # =============================================
+            # regressão capm
 
             X = sm.add_constant(df["Mercado"])
 
@@ -166,17 +142,13 @@ if st.sidebar.button("Executar Análise CAPM"):
 
             modelo = sm.OLS(y, X).fit()
 
-            # =============================================
-            # EXTRAIR ALPHA E BETA
-            # =============================================
+            # extrair alpha e beta
 
             alpha = modelo.params["const"]
 
             beta = modelo.params["Mercado"]
 
-            # =============================================
-            # RETORNO ESPERADO
-            # =============================================
+            # retorno esperado
 
             retorno_medio_mercado = (
                 df["Mercado"].mean() * 252
@@ -189,31 +161,23 @@ if st.sidebar.button("Executar Análise CAPM"):
                 )
             )
 
-            # =============================================
-            # PRÊMIO DE RISCO
-            # =============================================
+            # prêmio de risco
 
             premio_risco = (
                 retorno_esperado - taxa_livre
             )
 
-            # =============================================
-            # VOLATILIDADE
-            # =============================================
+            # volatilidade
 
             volatilidade = (
                 df["Ativo"].std() * np.sqrt(252)
             )
 
-            # =============================================
-            # R²
-            # =============================================
+            # r²
 
             r2 = modelo.rsquared
 
-            # =============================================
-            # SALVAR RESULTADOS
-            # =============================================
+            # salvar resultados
 
             resultados.append({
                 "Ativo": ativo,
@@ -229,24 +193,18 @@ if st.sidebar.button("Executar Análise CAPM"):
 
             st.error(f"Erro ao processar {ativo}: {e}")
 
-    # =====================================================
-    # DATAFRAME FINAL
-    # =====================================================
+    # dataframe final
 
     df_resultados = pd.DataFrame(resultados)
 
-    # =====================================================
-    # FILTRO DOS MELHORES
-    # =====================================================
+    # filtro dos melhores
 
     df_resultados = df_resultados.sort_values(
         by="Prêmio de Risco (%)",
         ascending=False
     )
 
-    # =====================================================
-    # RESULTADOS
-    # =====================================================
+    # resultados
 
     st.subheader("📊 Resultado Final do CAPM")
 
@@ -255,9 +213,7 @@ if st.sidebar.button("Executar Análise CAPM"):
         use_container_width=True
     )
 
-    # =====================================================
-    # MÉTRICAS GERAIS
-    # =====================================================
+    # métricas gerais
 
     st.subheader("📌 Estatísticas Gerais")
 
@@ -287,9 +243,7 @@ if st.sidebar.button("Executar Análise CAPM"):
         ]
     )
 
-    # =====================================================
-    # GRÁFICO BETA
-    # =====================================================
+    # gráfico beta
 
     st.subheader("📉 Beta dos Ativos")
 
@@ -306,9 +260,7 @@ if st.sidebar.button("Executar Análise CAPM"):
 
     st.pyplot(fig1)
 
-    # =====================================================
-    # GRÁFICO RETORNO ESPERADO
-    # =====================================================
+    # gráfico retorno esperado
 
     st.subheader("📈 Retorno Esperado")
 
@@ -324,4 +276,3 @@ if st.sidebar.button("Executar Análise CAPM"):
     ax2.set_ylabel("Retorno (%)")
 
     st.pyplot(fig2)
-

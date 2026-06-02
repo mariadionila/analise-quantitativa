@@ -16,28 +16,21 @@ st.set_page_config(
 
 # título
 
-st.title("📉 Modelos ARCH/GARCH")
+st.title("Análise de Volatilidade e Risco")
 
 st.markdown("""
 
-## Modelagem da Heterocedasticidade Condicional
+## Estimativa da Dinâmica de Volatilidade dos Ativos Financeiros
 
-Os modelos ARCH/GARCH são utilizados para
-analisar a dinâmica da volatilidade dos
-ativos financeiros.
-
-Esses modelos conseguem capturar:
-
-- agrupamento de volatilidade
-- persistência do risco
-- períodos turbulentos
-- mudanças dinâmicas na variância
+Os modelos ARCH e GARCH capturam padrões temporais de volatilidade,
+permitindo avaliar a persistência do risco e prever períodos de maior
+instabilidade nos mercados financeiros.
 
 """)
 
 # sidebar
 
-st.sidebar.header("⚙️ Configurações")
+st.sidebar.header(" Configurações")
 
 # lista de ativos
 
@@ -83,7 +76,7 @@ data_fim = st.sidebar.date_input(
 # botão
 
 executar = st.sidebar.button(
-    "🚀 Executar Análise"
+    " Executar Análise"
 )
 
 # execução
@@ -98,7 +91,7 @@ if executar:
 
         try:
 
-            st.header(f"📊 {ativo}")
+            st.header(f" {ativo}")
 
             # download dos dados
 
@@ -207,7 +200,7 @@ if executar:
             # gráfico volatilidade
 
             st.subheader(
-                "📈 Volatilidade Condicional"
+                "Evolução da Volatilidade Condicional"
             )
 
             fig, ax = plt.subplots(
@@ -250,7 +243,7 @@ if executar:
         )
 
         st.header(
-            "📊 Resultado Final GARCH"
+            " Resultado Final GARCH"
         )
 
         st.dataframe(
@@ -261,7 +254,7 @@ if executar:
         # gráfico comparativo
 
         st.subheader(
-            "📉 Comparação de Volatilidade"
+            "Comparação de Volatilidade"
         )
 
         fig2, ax2 = plt.subplots(

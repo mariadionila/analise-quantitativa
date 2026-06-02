@@ -8,12 +8,12 @@ import matplotlib.pyplot as plt
 # configuração da página
 
 st.set_page_config(
-    page_title="Fase I - CAPM",
+    page_title="Seleção de Ativos - CAPM e Fama-French",
     layout="wide"
 )
 
-st.title("📈 Fase I - Filtro de Risco e Econometria")
-st.markdown("## Modelo CAPM para Seleção de Ativos")
+st.title("Aplicação dos modelos CAPM e Fama-French para análise de risco, retorno esperado e fatores de risco")
+st.markdown("## Análise CAPM dos Ativos Selecionados")
 
 # parâmetros
 
@@ -78,7 +78,7 @@ for ativo in ativos:
 
 if st.sidebar.button("Executar Análise CAPM"):
 
-    st.subheader("📥 Coletando Dados...")
+    st.subheader("Coletando Dados...")
 
     # download benchmark
 
@@ -206,7 +206,7 @@ if st.sidebar.button("Executar Análise CAPM"):
 
     # resultados
 
-    st.subheader("Resultado Final do CAPM")
+    st.subheader("Ranking de Ativos por Retorno Ajustado ao Risco (CAPM)")
 
     st.dataframe(
         df_resultados,
@@ -215,7 +215,7 @@ if st.sidebar.button("Executar Análise CAPM"):
 
     # métricas gerais
 
-    st.subheader(" Estatísticas Gerais")
+    st.subheader("Insights da Análise")
 
     col1, col2, col3 = st.columns(3)
 

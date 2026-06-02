@@ -1,6 +1,4 @@
-# =====================================================
-# MODELOS ARCH/GARCH
-# =====================================================
+# modelos arch/garch
 
 import streamlit as st
 import yfinance as yf
@@ -9,18 +7,14 @@ import matplotlib.pyplot as plt
 
 from arch import arch_model
 
-# =====================================================
-# CONFIGURAÇÃO DA PÁGINA
-# =====================================================
+# configuração da página
 
 st.set_page_config(
     page_title="ARCH/GARCH",
     layout="wide"
 )
 
-# =====================================================
-# TÍTULO
-# =====================================================
+# título
 
 st.title("📉 Modelos ARCH/GARCH")
 
@@ -41,15 +35,11 @@ Esses modelos conseguem capturar:
 
 """)
 
-# =====================================================
-# SIDEBAR
-# =====================================================
+# sidebar
 
 st.sidebar.header("⚙️ Configurações")
 
-# =====================================================
-# LISTA DE ATIVOS
-# =====================================================
+# lista de ativos
 
 lista_ativos = [
     "PETR4.SA",
@@ -66,9 +56,7 @@ lista_ativos = [
     "LREN3.SA"
 ]
 
-# =====================================================
-# SELEÇÃO DOS ATIVOS
-# =====================================================
+# seleção dos ativos
 
 ativos = st.sidebar.multiselect(
     "Selecione os ativos",
@@ -80,9 +68,7 @@ ativos = st.sidebar.multiselect(
     ]
 )
 
-# =====================================================
-# PERÍODO
-# =====================================================
+# período
 
 data_inicio = st.sidebar.date_input(
     "Data Inicial",
@@ -94,25 +80,19 @@ data_fim = st.sidebar.date_input(
     pd.to_datetime("today")
 )
 
-# =====================================================
-# BOTÃO
-# =====================================================
+# botão
 
 executar = st.sidebar.button(
     "🚀 Executar Análise"
 )
 
-# =====================================================
-# EXECUÇÃO
-# =====================================================
+# execução
 
 if executar:
 
     resultados_garch = []
 
-    # =================================================
-    # LOOP DOS ATIVOS
-    # =================================================
+    # loop dos ativos
 
     for ativo in ativos:
 
@@ -120,9 +100,7 @@ if executar:
 
             st.header(f"📊 {ativo}")
 
-            # =========================================
-            # DOWNLOAD DOS DADOS
-            # =========================================
+            # download dos dados
 
             dados_ativo = yf.download(
                 ativo,
@@ -131,9 +109,7 @@ if executar:
                 progress=False
             )
 
-            # =========================================
-            # VALIDAR DADOS
-            # =========================================
+            # validar dados
 
             if dados_ativo.empty:
 
@@ -143,9 +119,7 @@ if executar:
 
                 continue
 
-            # =========================================
-            # RETORNOS
-            # =========================================
+            # retornos
 
             retorno = (
                 dados_ativo["Close"]
@@ -153,9 +127,7 @@ if executar:
                 .dropna()
             )
 
-            # =========================================
-            # VALIDAR RETORNOS
-            # =========================================
+            # validar retornos
 
             if len(retorno) < 30:
 
@@ -165,9 +137,7 @@ if executar:
 
                 continue
 
-            # =========================================
-            # MODELO GARCH(1,1)
-            # =========================================
+            # modelo garch(1,1)
 
             modelo_garch = arch_model(
                 retorno * 100,
@@ -180,17 +150,13 @@ if executar:
                 disp="off"
             )
 
-            # =========================================
-            # VOLATILIDADE CONDICIONAL
-            # =========================================
+            # volatilidade condicional
 
             volatilidade = (
                 resultado.conditional_volatility
             )
 
-            # =========================================
-            # PREVISÃO
-            # =========================================
+            # previsão
 
             previsao = resultado.forecast(
                 horizon=5
@@ -202,9 +168,7 @@ if executar:
                 .mean()
             )
 
-            # =========================================
-            # PARÂMETROS
-            # =========================================
+            # parâmetros
 
             omega = resultado.params["omega"]
 
@@ -212,9 +176,7 @@ if executar:
 
             beta = resultado.params["beta[1]"]
 
-            # =========================================
-            # RESULTADOS
-            # =========================================
+            # resultados
 
             resultados_garch.append({
 
@@ -242,9 +204,7 @@ if executar:
 
             })
 
-            # =========================================
-            # GRÁFICO VOLATILIDADE
-            # =========================================
+            # gráfico volatilidade
 
             st.subheader(
                 "📈 Volatilidade Condicional"
@@ -281,9 +241,7 @@ if executar:
                 f"Erro GARCH ({ativo}): {e}"
             )
 
-    # =================================================
-    # RESULTADOS FINAIS
-    # =================================================
+    # resultados finais
 
     if len(resultados_garch) > 0:
 
@@ -300,9 +258,7 @@ if executar:
             use_container_width=True
         )
 
-        # =============================================
-        # GRÁFICO COMPARATIVO
-        # =============================================
+        # gráfico comparativo
 
         st.subheader(
             "📉 Comparação de Volatilidade"

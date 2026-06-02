@@ -127,7 +127,7 @@ with col1:
 
     ## CAPM
 
-    Modelo de Risco e Retorno
+    Avaliação de Risco Sistemático e Performance
 
     - Beta
     - Retorno Esperdo
@@ -143,7 +143,7 @@ with col2:
 
     ## Fama-French
 
-    Modelo Multifatorial
+    Análise Multifatorial de Retornos
 
     - SMB
     - HML
@@ -159,7 +159,7 @@ with col3:
 
     ## ARCH/GARCH
 
-    Modelos de Volatilidade
+    Previsão e Monitoramento de Risco Financeiro
 
     - Variância Condicional
     - Dinâmica do Risco

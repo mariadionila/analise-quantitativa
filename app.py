@@ -3,8 +3,7 @@ import streamlit as st
 # config
 
 st.set_page_config(
-    page_title="Análise Quantitativa",
-    page_icon="📈",
+    page_title=" Plataforma de Análise Quantitativa",
     layout="wide"
 )
 
@@ -101,7 +100,7 @@ p, div {
 st.title("Análise Quantitativa")
 
 st.caption(
-    "Sistema de análise quantitativa"
+    "Modelos Econométricos para Avaliação de Ativos e Volatilidade"
 )
 
 # kpis

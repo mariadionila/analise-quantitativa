@@ -1,8 +1,6 @@
 import streamlit as st
 
-# =====================================================
-# CONFIG
-# =====================================================
+# config
 
 st.set_page_config(
     page_title="Análise Quantitativa",
@@ -10,9 +8,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# =====================================================
-# CSS
-# =====================================================
+# css
 
 st.markdown("""
 <style>
@@ -100,19 +96,15 @@ p, div {
 </style>
 """, unsafe_allow_html=True)
 
-# =====================================================
-# HEADER
-# =====================================================
+# header
 
-st.title("📈 Análise Quantitativa")
+st.title("Análise Quantitativa")
 
 st.caption(
     "Sistema de análise quantitativa"
 )
 
-# =====================================================
-# KPIs
-# =====================================================
+# kpis
 
 c1, c2, c3, c4 = st.columns(4)
 
@@ -121,15 +113,11 @@ c2.metric("Ativos", "12")
 c3.metric("Framework", "Streamlit")
 c4.metric("Área", "Quant")
 
-# =====================================================
-# ESPAÇO
-# =====================================================
+# espaço
 
 st.write("")
 
-# =====================================================
-# CARDS
-# =====================================================
+# cards
 
 col1, col2, col3 = st.columns(3)
 
@@ -138,7 +126,7 @@ with col1:
     st.markdown("""
     <div class="card">
 
-    ## 📊 CAPM
+    ## CAPM
 
     Modelo de Risco e Retorno
 
@@ -154,7 +142,7 @@ with col2:
     st.markdown("""
     <div class="card">
 
-    ## 📈 Fama-French
+    ## Fama-French
 
     Modelo Multifatorial
 
@@ -170,7 +158,7 @@ with col3:
     st.markdown("""
     <div class="card">
 
-    ## 📉 ARCH/GARCH
+    ## ARCH/GARCH
 
     Modelos de Volatilidade
 
@@ -181,9 +169,7 @@ with col3:
     </div>
     """, unsafe_allow_html=True)
 
-# =====================================================
-# FOOTER
-# =====================================================
+# footer
 
 st.write("")
 st.write("")

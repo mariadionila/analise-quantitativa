@@ -12,7 +12,7 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("Aplicação dos modelos CAPM e Fama-French para análise de risco, retorno esperado e fatores de risco")
+st.markdown("Aplicação dos modelos CAPM e Fama-French para análise de risco, retorno esperado e fatores de risco")
 st.markdown("## Análise CAPM dos Ativos Selecionados")
 
 # parâmetros

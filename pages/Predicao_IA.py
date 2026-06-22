@@ -1,303 +1,158 @@
-import streamlit as st
-import yfinance as yf
-import pandas as pd
 import numpy as np
+import torch
+import torch.nn as nn
+from sklearn.preprocessing import MinMaxScaler
 
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.metrics import (
-    mean_absolute_error,
-    mean_squared_error,
-    r2_score
-)
 
-from xgboost import XGBRegressor
-from lightgbm import LGBMRegressor
+def create_sequences(data, seq_length=30):
+    X = []
+    y = []
 
-import matplotlib.pyplot as plt
+    for i in range(len(data) - seq_length):
+        X.append(data[i:i + seq_length])
+        y.append(data[i + seq_length])
 
-st.set_page_config(
-    page_title="Predição com IA",
-    layout="wide"
-)
+    return np.array(X), np.array(y)
 
-st.title("Inteligência Artificial para Predição de Retornos")
 
-ativos = [
-    "PETR4.SA",
-    "VALE3.SA",
-    "ITUB4.SA",
-    "BBDC4.SA",
-    "ABEV3.SA",
-    "WEGE3.SA",
-    "BBAS3.SA",
-    "MGLU3.SA",
-    "SUZB3.SA",
-    "JBSS3.SA",
-    "RENT3.SA",
-    "LREN3.SA"
-]
+class LSTMModel(nn.Module):
 
-ativo = st.sidebar.selectbox(
-    "Selecione o ativo",
-    ativos
-)
+    def __init__(
+        self,
+        input_size=1,
+        hidden_size=64,
+        num_layers=2
+    ):
+        super().__init__()
 
-modelo_escolhido = st.sidebar.selectbox(
-    "Modelo",
-    [
-        "Random Forest",
-        "XGBoost",
-        "LightGBM"
-    ]
-)
-
-inicio = st.sidebar.date_input(
-    "Data Inicial",
-    pd.to_datetime("2020-01-01")
-)
-
-fim = st.sidebar.date_input(
-    "Data Final",
-    pd.to_datetime("today")
-)
-
-if st.sidebar.button("Executar Predição"):
-
-    dados = yf.download(
-        ativo,
-        start=inicio,
-        end=fim,
-        progress=False
-    )
-
-    if dados.empty:
-        st.error("Sem dados disponíveis")
-        st.stop()
-
-    df = dados.copy()
-
-    df["Retorno"] = df["Close"].pct_change()
-
-    # FEATURES
-
-    df["ret_1"] = df["Retorno"].shift(1)
-
-    df["ret_5"] = (
-        df["Retorno"]
-        .rolling(5)
-        .mean()
-    )
-
-    df["ret_20"] = (
-        df["Retorno"]
-        .rolling(20)
-        .mean()
-    )
-
-    df["vol_5"] = (
-        df["Retorno"]
-        .rolling(5)
-        .std()
-    )
-
-    df["vol_20"] = (
-        df["Retorno"]
-        .rolling(20)
-        .std()
-    )
-
-    df["ma_5"] = (
-        df["Close"]
-        .rolling(5)
-        .mean()
-    )
-
-    df["ma_20"] = (
-        df["Close"]
-        .rolling(20)
-        .mean()
-    )
-
-    df["ma_50"] = (
-        df["Close"]
-        .rolling(50)
-        .mean()
-    )
-
-    # TARGET
-
-    df["Target"] = (
-        df["Retorno"]
-        .shift(-1)
-    )
-
-    df = df.dropna()
-
-    features = [
-        "ret_1",
-        "ret_5",
-        "ret_20",
-        "vol_5",
-        "vol_20",
-        "ma_5",
-        "ma_20",
-        "ma_50"
-    ]
-
-    X = df[features]
-
-    y = df["Target"]
-
-    split = int(len(df) * 0.8)
-
-    X_train = X[:split]
-    X_test = X[split:]
-
-    y_train = y[:split]
-    y_test = y[split:]
-
-    # MODELOS
-
-    if modelo_escolhido == "Random Forest":
-
-        modelo = RandomForestRegressor(
-            n_estimators=300,
-            max_depth=10,
-            random_state=42
+        self.lstm = nn.LSTM(
+            input_size=input_size,
+            hidden_size=hidden_size,
+            num_layers=num_layers,
+            batch_first=True
         )
 
-    elif modelo_escolhido == "XGBoost":
-
-        modelo = XGBRegressor(
-            n_estimators=300,
-            learning_rate=0.05,
-            max_depth=5,
-            random_state=42
+        self.fc = nn.Linear(
+            hidden_size,
+            1
         )
 
-    else:
+    def forward(self, x):
 
-        modelo = LGBMRegressor(
-            n_estimators=300,
-            learning_rate=0.05,
-            random_state=42
+        output, _ = self.lstm(x)
+
+        output = output[:, -1, :]
+
+        output = self.fc(output)
+
+        return output
+
+
+class GRUModel(nn.Module):
+
+    def __init__(
+        self,
+        input_size=1,
+        hidden_size=64,
+        num_layers=2
+    ):
+        super().__init__()
+
+        self.gru = nn.GRU(
+            input_size=input_size,
+            hidden_size=hidden_size,
+            num_layers=num_layers,
+            batch_first=True
         )
 
-    modelo.fit(X_train, y_train)
-
-    previsoes = modelo.predict(X_test)
-
-    mae = mean_absolute_error(
-        y_test,
-        previsoes
-    )
-
-    rmse = np.sqrt(
-        mean_squared_error(
-            y_test,
-            previsoes
+        self.fc = nn.Linear(
+            hidden_size,
+            1
         )
+
+    def forward(self, x):
+
+        output, _ = self.gru(x)
+
+        output = output[:, -1, :]
+
+        output = self.fc(output)
+
+        return output
+
+
+def prepare_data(series, seq_length=30):
+
+    scaler = MinMaxScaler()
+
+    scaled = scaler.fit_transform(
+        np.array(series).reshape(-1, 1)
     )
 
-    r2 = r2_score(
-        y_test,
-        previsoes
+    X, y = create_sequences(
+        scaled,
+        seq_length
     )
 
-    st.subheader("Métricas")
+    return X, y, scaler
 
-    c1, c2, c3 = st.columns(3)
 
-    c1.metric(
-        "MAE",
-        f"{mae:.6f}"
+def train_model(
+    model,
+    X_train,
+    y_train,
+    epochs=50,
+    lr=0.001
+):
+
+    criterion = nn.MSELoss()
+
+    optimizer = torch.optim.Adam(
+        model.parameters(),
+        lr=lr
     )
 
-    c2.metric(
-        "RMSE",
-        f"{rmse:.6f}"
+    X_train = torch.tensor(
+        X_train,
+        dtype=torch.float32
     )
 
-    c3.metric(
-        "R²",
-        f"{r2:.4f}"
+    y_train = torch.tensor(
+        y_train,
+        dtype=torch.float32
     )
 
-    st.subheader("Real x Previsto")
+    for epoch in range(epochs):
 
-    resultado = pd.DataFrame({
-        "Real": y_test,
-        "Previsto": previsoes
-    })
+        model.train()
 
-    st.dataframe(
-        resultado.tail(20),
-        use_container_width=True
-    )
+        optimizer.zero_grad()
 
-    fig, ax = plt.subplots(
-        figsize=(12,5)
-    )
+        predictions = model(X_train)
 
-    ax.plot(
-        resultado.index,
-        resultado["Real"],
-        label="Real"
-    )
+        loss = criterion(
+            predictions,
+            y_train.reshape(-1, 1)
+        )
 
-    ax.plot(
-        resultado.index,
-        resultado["Previsto"],
-        label="Previsto"
-    )
+        loss.backward()
 
-    ax.legend()
+        optimizer.step()
 
-    st.pyplot(fig)
+    return model
 
-    st.subheader(
-        "Importância das Variáveis"
-    )
 
-    importancia = pd.DataFrame({
-        "Variável": features,
-        "Importância":
-            modelo.feature_importances_
-    })
+def predict(model, X):
 
-    importancia = importancia.sort_values(
-        "Importância",
-        ascending=False
-    )
+    model.eval()
 
-    st.dataframe(
-        importancia,
-        use_container_width=True
-    )
+    with torch.no_grad():
 
-    fig2, ax2 = plt.subplots(
-        figsize=(10,5)
-    )
+        X = torch.tensor(
+            X,
+            dtype=torch.float32
+        )
 
-    ax2.bar(
-        importancia["Variável"],
-        importancia["Importância"]
-    )
+        preds = model(X)
 
-    plt.xticks(rotation=45)
-
-    st.pyplot(fig2)
-
-    ultimo = X.tail(1)
-
-    proximo_retorno = modelo.predict(
-        ultimo
-    )[0]
-
-    st.subheader(
-        "Previsão Próximo Pregão"
-    )
-
-    st.success(
-        f"Retorno previsto: {proximo_retorno:.4%}"
-    )
+    return preds.numpy()

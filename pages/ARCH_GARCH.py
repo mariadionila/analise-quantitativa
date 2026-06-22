@@ -16,7 +16,7 @@ st.set_page_config(
 
 # título
 
-st.title("Análise de Volatilidade e Risco")
+st.markdown("Análise de Volatilidade e Risco")
 
 st.markdown("""
 

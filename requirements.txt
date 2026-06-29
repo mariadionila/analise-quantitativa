@@ -7,3 +7,6 @@ statsmodels
 scikit-learn
 xgboost
 lightgbm
+torch
+torchvision
+torchaudio

@@ -2,6 +2,7 @@ import streamlit as st
 import yfinance as yf
 import pandas as pd
 import numpy as np
+import re
 
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
@@ -63,45 +64,52 @@ if st.sidebar.button("Executar Previsão"):
         ativo,
         start=data_inicio,
         end=data_fim,
-        progress=False
+        progress=False,
+        auto_adjust=True
     )
 
-    dados = dados[["Close"]]
+    # Corrige MultiIndex do yfinance
+    if isinstance(dados.columns, pd.MultiIndex):
+        dados.columns = dados.columns.get_level_values(0)
+
+    dados = dados[["Close"]].copy()
 
     dados["Retorno"] = dados["Close"].pct_change()
 
-    dados["Lag_1"] = dados["Retorno"].shift(1)
-    dados["Lag_2"] = dados["Retorno"].shift(2)
-    dados["Lag_3"] = dados["Retorno"].shift(3)
-    dados["Lag_4"] = dados["Retorno"].shift(4)
-    dados["Lag_5"] = dados["Retorno"].shift(5)
+    for i in range(1, 6):
+        dados[f"Lag_{i}"] = dados["Retorno"].shift(i)
 
     dados["Media_5"] = dados["Retorno"].rolling(5).mean()
     dados["Media_10"] = dados["Retorno"].rolling(10).mean()
 
-    dados = dados.dropna()
+    dados.dropna(inplace=True)
 
-    X = dados[
-        [
-            "Lag_1",
-            "Lag_2",
-            "Lag_3",
-            "Lag_4",
-            "Lag_5",
-            "Media_5",
-            "Media_10"
-        ]
+    features = [
+        "Lag_1",
+        "Lag_2",
+        "Lag_3",
+        "Lag_4",
+        "Lag_5",
+        "Media_5",
+        "Media_10"
     ]
 
+    X = dados[features].copy()
     y = dados["Retorno"]
 
-    split = int(len(dados) * 0.8)
+    # Limpa nomes das colunas
+    X.columns = [
+        re.sub(r"[^A-Za-z0-9_]", "_", str(c))
+        for c in X.columns
+    ]
 
-    X_train = X[:split]
-    X_test = X[split:]
+    split = int(len(X) * 0.8)
 
-    y_train = y[:split]
-    y_test = y[split:]
+    X_train = X.iloc[:split]
+    X_test = X.iloc[split:]
+
+    y_train = y.iloc[:split]
+    y_test = y.iloc[split:]
 
     if modelo_escolhido == "Random Forest":
 
@@ -110,6 +118,9 @@ if st.sidebar.button("Executar Previsão"):
             max_depth=10,
             random_state=42
         )
+
+        modelo.fit(X_train, y_train)
+        previsoes = modelo.predict(X_test)
 
     elif modelo_escolhido == "XGBoost":
 
@@ -120,18 +131,28 @@ if st.sidebar.button("Executar Previsão"):
             random_state=42
         )
 
+        modelo.fit(X_train, y_train)
+        previsoes = modelo.predict(X_test)
+
     else:
 
         modelo = LGBMRegressor(
             n_estimators=300,
             learning_rate=0.05,
             max_depth=5,
-            random_state=42
+            random_state=42,
+            verbosity=-1
         )
 
-    modelo.fit(X_train, y_train)
+        # Evita erro de nomes das features
+        modelo.fit(
+            X_train.to_numpy(),
+            y_train.to_numpy()
+        )
 
-    previsoes = modelo.predict(X_test)
+        previsoes = modelo.predict(
+            X_test.to_numpy()
+        )
 
     mae = mean_absolute_error(y_test, previsoes)
     rmse = np.sqrt(mean_squared_error(y_test, previsoes))
@@ -149,15 +170,8 @@ if st.sidebar.button("Executar Previsão"):
 
     fig, ax = plt.subplots(figsize=(12, 5))
 
-    ax.plot(
-        y_test.values,
-        label="Real"
-    )
-
-    ax.plot(
-        previsoes,
-        label="Previsto"
-    )
+    ax.plot(y_test.values, label="Real")
+    ax.plot(previsoes, label="Previsto")
 
     ax.legend()
 
@@ -165,9 +179,14 @@ if st.sidebar.button("Executar Previsão"):
 
     ultima_linha = X.tail(1)
 
-    proximo_retorno = modelo.predict(
-        ultima_linha
-    )[0]
+    if modelo_escolhido == "LightGBM":
+        proximo_retorno = modelo.predict(
+            ultima_linha.to_numpy()
+        )[0]
+    else:
+        proximo_retorno = modelo.predict(
+            ultima_linha
+        )[0]
 
     st.subheader("Próximo Retorno Previsto")
 
@@ -175,16 +194,20 @@ if st.sidebar.button("Executar Previsão"):
         f"{proximo_retorno * 100:.2f}%"
     )
 
-    if hasattr(modelo, "feature_importances_"):
+    if (
+        modelo_escolhido != "LightGBM"
+        and hasattr(modelo, "feature_importances_")
+    ):
 
-        importancia = pd.DataFrame(
-            {
+        importancia = (
+            pd.DataFrame({
                 "Variável": X.columns,
                 "Importância": modelo.feature_importances_
-            }
-        ).sort_values(
-            "Importância",
-            ascending=False
+            })
+            .sort_values(
+                "Importância",
+                ascending=False
+            )
         )
 
         st.subheader("Importância das Variáveis")

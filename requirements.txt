@@ -3,8 +3,10 @@ yfinance
 pandas
 numpy
 matplotlib
+arch
 statsmodels
 scikit-learn
+tensorflow
 xgboost
 lightgbm
 torch

@@ -1,6 +1,7 @@
 streamlit
 yfinance
 pandas
+pandas_datareader
 numpy
 matplotlib
 arch

@@ -107,7 +107,7 @@ st.caption(
 
 c1, c2, c3, c4 = st.columns(4)
 
-c1.metric("Modelos", "3")
+c1.metric("Modelos", "4")
 c2.metric("Ativos", "12")
 c3.metric("Framework", "Streamlit")
 c4.metric("Área", "Quant")
@@ -118,7 +118,7 @@ st.write("")
 
 # cards
 
-col1, col2, col3 = st.columns(3)
+col1, col2, col3, col4 = st.columns(4)
 
 with col1:
 
@@ -164,6 +164,22 @@ with col3:
     - Variância Condicional
     - Dinâmica do Risco
     - Previsão
+
+    </div>
+    """, unsafe_allow_html=True)
+
+with col4:
+
+    st.markdown("""
+    <div class="card">
+
+    ## Otimização de Carteira
+
+    Alocação Ótima via Teoria Moderna de Carteiras
+
+    - Markowitz
+    - HRP
+    - Black-Litterman
 
     </div>
     """, unsafe_allow_html=True)

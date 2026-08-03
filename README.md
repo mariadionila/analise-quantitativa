@@ -1,266 +1,54 @@
-# 📈 DioInvest AI - Sistema Inteligente de Análise Quantitativa de Ativos
+# 📈 DioInvest AI
+### Sistema Inteligente de Análise Quantitativa e Otimização de Carteiras
 
-Este projeto implementa um **Web App Interativo em Streamlit** para apoio à tomada de decisão em investimentos financeiros utilizando técnicas de **Econometria**, **Machine Learning** e **Deep Learning**.
+> Plataforma desenvolvida em **Python** e **Streamlit** para apoio à tomada de decisão em investimentos, integrando modelos de **Econometria**, **Machine Learning**, **Deep Learning** e **Teoria Moderna de Carteiras (Markowitz)**.
 
-O objetivo é transformar um simples visualizador de dados em um sistema inteligente capaz de analisar ativos, modelar riscos, prever retornos futuros e, futuramente, otimizar carteiras de investimento.
-
-O projeto foi desenvolvido para a disciplina **Tópicos Avançados em Finanças – Ciência de Dados para Negócios (UFPB)**.
-
----
-
-# 🚀 Funcionalidades
-
-O usuário escolhe um mercado, seleciona os ativos e define o período da análise. O aplicativo realiza automaticamente o download dos dados históricos e organiza os resultados em módulos independentes.
-
-## 📊 Visão Geral
-
-- Evolução dos preços ajustados
-- Retorno acumulado
-- Retorno anualizado
-- Volatilidade anualizada
-- Drawdown máximo
-- Estatísticas descritivas
+![Python](https://img.shields.io/badge/Python-3.12-blue)
+![Streamlit](https://img.shields.io/badge/Streamlit-WebApp-red)
+![License](https://img.shields.io/badge/License-Acadêmico-green)
 
 ---
 
-## 📈 CAPM
+# 📌 Sobre o Projeto
 
-Implementação completa do Capital Asset Pricing Model.
+O **DioInvest AI** foi desenvolvido como projeto final da disciplina **Tópicos Avançados em Finanças**, do curso de Ciência de Dados para Negócios da Universidade Federal da Paraíba (UFPB).
 
-São estimados:
+O sistema foi criado para automatizar todo o processo de análise quantitativa de investimentos, permitindo que o usuário avalie ativos financeiros desde a coleta dos dados históricos até a construção de uma carteira otimizada.
 
-- Beta
-- Alfa
-- Retorno esperado
-- Prêmio de risco
-- Coeficiente de determinação (R²)
-- p-value do Beta
-- Gráfico de regressão
+O principal objetivo é fornecer uma plataforma capaz de integrar técnicas econométricas, modelos de Inteligência Artificial e otimização de carteiras em um único fluxo de apoio à tomada de decisão.
 
 ---
 
-## 📉 Modelo de Três Fatores (Fama-French)
+# 🎯 Objetivos
 
-Decomposição dos retornos utilizando:
+O sistema permite que o investidor:
 
-- Fator de Mercado (MKT-RF)
-- SMB (Small Minus Big)
-- HML (High Minus Low)
-
-O módulo apresenta:
-
-- Coeficientes dos fatores
-- Significância estatística
-- R²
-- Comparação entre ativos
+- Avalie o risco dos ativos financeiros;
+- Analise fatores de mercado através de modelos econométricos;
+- Preveja retornos utilizando Machine Learning e Deep Learning;
+- Valide a qualidade dos modelos preditivos;
+- Simule estratégias através de Backtesting;
+- Construa uma carteira ótima utilizando o Modelo Média-Variância de Markowitz.
 
 ---
 
-## 📊 Modelos ARCH/GARCH
+# 🏗 Arquitetura do Sistema
 
-Análise da dinâmica da volatilidade.
+O projeto foi dividido em três grandes camadas, seguindo exatamente o fluxo de tomada de decisão utilizado na análise quantitativa.
 
-O sistema estima:
-
-- ARCH
-- GARCH(1,1)
-- Persistência da volatilidade
-- Volatilidade condicional
-- Previsão de volatilidade futura
-
----
-
-# 🤖 Inteligência Artificial
-
-O aplicativo possui um módulo completo de previsão de retornos utilizando algoritmos de aprendizado de máquina.
-
-Modelos implementados:
-
-- Random Forest Regressor
-- XGBoost
-- LightGBM
-
-Para cada modelo são exibidos:
-
-- Previsões
-- MAE
-- RMSE
-- R²
-- Comparação entre valores reais e previstos
-
----
-
-# 🧠 Deep Learning
-
-Também foram implementadas Redes Neurais Recorrentes para séries temporais.
-
-Modelos disponíveis:
-
-- LSTM (Long Short-Term Memory)
-- GRU (Gated Recurrent Unit)
-
-Os modelos são treinados utilizando janelas temporais dos preços históricos e exibem:
-
-- Curvas de treinamento
-- Loss
-- Predições
-- Comparação entre previsão e valores reais
-
----
-
-# 📋 Validação
-
-Para evitar vazamento temporal dos dados, o projeto utiliza técnicas específicas para séries financeiras.
-
-Recursos implementados:
-
-- Time Series Cross Validation
-- Divisão cronológica dos dados
-- Métricas de desempenho
-- Comparação entre modelos
-
----
-
-# 📈 Backtesting
-
-O módulo de Backtesting permite avaliar o desempenho histórico das estratégias geradas pelos modelos.
-
-São apresentados:
-
-- Retorno acumulado
-- Comparação Buy & Hold
-- Curva de patrimônio
-- Estatísticas da estratégia
-
----
-
-# 📂 Fontes de Dados
-
-Os dados são obtidos automaticamente através das seguintes fontes:
-
-- Yahoo Finance (yfinance)
-- Kenneth French Data Library
-- pandas-datareader
-
-Caso alguma fonte esteja indisponível, o sistema permite importar arquivos CSV contendo preços históricos e fatores de Fama-French.
-
-O projeto utiliza exclusivamente dados reais.
-
----
-
-# ▶️ Como Executar
-
-Clone o repositório:
-
-```bash
-git clone https://github.com/mariadionila/analise-quantitativa.git
-```
-
-Entre na pasta:
-
-```bash
-cd analise-quantitativa
-```
-
-Crie o ambiente virtual:
-
-```bash
-python -m venv .venv
-```
-
-Ative o ambiente.
-
-Windows
-
-```bash
-.venv\Scripts\activate
-```
-
-Linux/Mac
-
-```bash
-source .venv/bin/activate
-```
-
-Instale as dependências:
-
-```bash
-pip install -r requirements.txt
-```
-
-Execute o aplicativo:
-
-```bash
-streamlit run app.py
-```
-
-Acesse:
-
-```
-http://localhost:8501
-```
-
----
-
-# 💻 Tecnologias Utilizadas
-
-- Python
-- Streamlit
-- Pandas
-- NumPy
-- SciPy
-- Statsmodels
-- ARCH
-- yfinance
-- pandas-datareader
-- scikit-learn
-- XGBoost
-- LightGBM
-- TensorFlow / Keras
-- Plotly
-- Matplotlib
-
----
-
-# 📁 Estrutura do Projeto
-
-```
-analise-quantitativa/
-
-│
-├── app.py
-├── requirements.txt
-├── README.md
-│
-├── pages/
-│   ├── Visao_Geral.py
-│   ├── CAPM.py
-│   ├── CAPM_e_Fama_French.py
-│   ├── GARCH.py
-│   ├── Predicao_IA.py
-│   ├── DeepLearning.py
-│   ├── Validacao.py
-│   └── Backtesting.py
-│
-├── utils/
-├── data/
-└── assets/
-```
-
----
-
-# 📊 Metodologia
-
-O fluxo do sistema segue três etapas principais:
-
-```
-Dados Históricos
+```text
+Coleta de Dados
         │
         ▼
-Econometria
-(CAPM • Fama-French • GARCH)
+Análise Exploratória
         │
         ▼
+Fase I
+Modelagem do Risco
+(CAPM • Fama-French • ARCH/GARCH)
+        │
+        ▼
+Fase II
 Machine Learning
 (Random Forest • XGBoost • LightGBM)
         │
@@ -270,37 +58,446 @@ Deep Learning
         │
         ▼
 Validação Temporal
+(TimeSeriesSplit)
         │
         ▼
 Backtesting
+        │
+        ▼
+Fase III
+Otimização de Carteiras
+(Markowitz)
+        │
+        ▼
+Carteira Recomendada
 ```
 
-Cada módulo fornece informações complementares para apoiar decisões de investimento baseadas em métodos quantitativos.
+Cada módulo da aplicação alimenta o módulo seguinte, permitindo que a carteira final seja construída utilizando as previsões obtidas pelos modelos desenvolvidos.
 
 ---
 
-# 🔄 Próximas Implementações
+# 🚀 Funcionalidades
 
-A próxima etapa do projeto contempla:
+## 📊 Coleta de Dados
 
-- Otimização de Carteiras (Markowitz)
-- Fronteira Eficiente
-- Black-Litterman
-- Hierarchical Risk Parity (HRP)
-- Riskfolio-Lib
-- Sistema completo de recomendação de portfólios
+O sistema realiza automaticamente a obtenção de dados financeiros através da biblioteca **yfinance**, permitindo ao usuário selecionar ativos da B3 e definir o período de análise.
+
+São coletados:
+
+- preços históricos;
+- retornos diários;
+- volume negociado;
+- estatísticas básicas.
 
 ---
 
-# 👨‍💻 Autor
+## 📈 Análise Exploratória
+
+Nesta etapa são apresentadas diversas análises estatísticas dos ativos financeiros.
+
+Entre elas:
+
+- Retorno acumulado;
+- Retorno diário;
+- Volatilidade;
+- Correlação;
+- Drawdown;
+- Estatísticas descritivas;
+- Visualização gráfica dos preços.
+
+---
+
+# 📉 Fase I — Modelagem do Risco
+
+A primeira camada do sistema é responsável pela avaliação do risco financeiro dos ativos.
+
+São utilizados modelos clássicos de econometria.
+
+## CAPM
+
+O modelo Capital Asset Pricing Model (CAPM) estima o retorno esperado de cada ativo considerando o risco sistemático.
+
+São apresentados:
+
+- Beta;
+- Alfa;
+- Prêmio de risco;
+- Retorno esperado;
+- Regressão Linear;
+- Gráficos comparativos.
+
+---
+
+## Modelo Fama-French
+
+O modelo de três fatores amplia o CAPM adicionando fatores relacionados ao tamanho e ao valor das empresas.
+
+São analisados:
+
+- MKT-RF;
+- SMB;
+- HML;
+- Coeficientes;
+- Significância estatística;
+- Regressão múltipla.
+
+---
+
+## ARCH/GARCH
+
+Os modelos ARCH e GARCH são utilizados para modelar a volatilidade condicional dos ativos.
+
+São apresentados:
+
+- Volatilidade condicional;
+- Persistência da volatilidade;
+- Previsão de volatilidade futura;
+- Gráficos da variância condicional.
+
+---
+
+# 🤖 Fase II — Machine Learning
+
+Após o filtro de risco, os ativos passam pelo módulo de Inteligência Artificial.
+
+Foram implementados diversos algoritmos supervisionados para previsão dos retornos.
+
+## Modelos utilizados
+
+- Random Forest
+- XGBoost
+- LightGBM
+
+Cada modelo é treinado utilizando séries temporais e posteriormente comparado através de métricas de desempenho.
+
+---
+
+## Métricas avaliadas
+
+- Mean Absolute Error (MAE)
+- Root Mean Squared Error (RMSE)
+- R² Score
+
+Essas métricas permitem identificar qual algoritmo apresentou melhor capacidade preditiva.
+
+---
+
+# 🧠 Deep Learning
+
+Além dos modelos tradicionais, o sistema também implementa Redes Neurais Artificiais para captura de padrões temporais complexos.
+
+Modelos implementados:
+
+- LSTM (Long Short-Term Memory)
+- GRU (Gated Recurrent Unit)
+
+Durante o treinamento são apresentados:
+
+- Curva de Loss;
+- Curva de Validação;
+- Comparação entre valores reais e previstos.
+
+---
+
+# ✅ Validação dos Modelos
+
+Para evitar problemas de **Data Leakage**, foi utilizada validação específica para séries temporais.
+
+Foram implementadas técnicas como:
+
+- Time Series Cross Validation;
+- Separação cronológica entre treino, validação e teste;
+- Comparação entre modelos.
+
+Essa abordagem garante maior confiabilidade aos resultados obtidos.
+
+---
+
+# 📈 Backtesting
+
+O módulo de Backtesting permite simular o comportamento histórico da estratégia desenvolvida.
+
+São comparadas diferentes abordagens de investimento.
+
+Entre elas:
+
+- Estratégia baseada nas previsões do modelo;
+- Buy and Hold;
+- Evolução do patrimônio;
+- Retorno acumulado.
+
+Esse módulo permite avaliar se a estratégia realmente agregaria valor ao investidor.
+
+---
+
+# 💼 Fase III — Otimização de Carteiras
+
+Após a previsão dos retornos, os valores previstos alimentam o modelo de otimização.
+
+Foi implementada a Teoria Moderna de Portfólios de Markowitz.
+
+O sistema calcula automaticamente:
+
+- Retorno esperado da carteira;
+- Risco da carteira;
+- Matriz de covariância;
+- Fronteira eficiente;
+- Carteira de mínima variância;
+- Carteira de maior Índice de Sharpe;
+- Pesos ótimos para cada ativo.
+
+Dessa forma, o investidor obtém uma carteira otimizada considerando simultaneamente retorno esperado e risco.
+
+---
+
+# 🔄 Fluxo Completo da Aplicação
+
+O funcionamento completo do sistema segue o fluxo abaixo.
+
+```text
+Escolha dos Ativos
+        │
+        ▼
+Download Automático
+        │
+        ▼
+Análise Exploratória
+        │
+        ▼
+CAPM
+        │
+        ▼
+Fama-French
+        │
+        ▼
+ARCH/GARCH
+        │
+        ▼
+Machine Learning
+        │
+        ▼
+Deep Learning
+        │
+        ▼
+Validação
+        │
+        ▼
+Backtesting
+        │
+        ▼
+Markowitz
+        │
+        ▼
+Carteira Final Recomendada
+```
+
+Todo esse processo ocorre automaticamente dentro da plataforma.
+
+---
+
+# 📂 Estrutura do Projeto
+
+```text
+analise-quantitativa/
+
+│── app.py
+│── requirements.txt
+│── README.md
+│
+├── pages/
+│   ├── Analise_Exploratoria.py
+│   ├── CAPM.py
+│   ├── Fama_French.py
+│   ├── ARCH_GARCH.py
+│   ├── Predicao_IA.py
+│   ├── DeepLearning.py
+│   ├── Validacao.py
+│   ├── Backtesting.py
+│   └── Otimizacao_Carteira.py
+│
+├── models/
+│
+├── data/
+│
+├── utils/
+│
+└── assets/
+```
+
+---
+
+# 💻 Tecnologias Utilizadas
+
+Linguagem:
+
+- Python 3.12
+
+Framework Web:
+
+- Streamlit
+
+Bibliotecas:
+
+- Pandas
+- NumPy
+- Scikit-Learn
+- Statsmodels
+- ARCH
+- TensorFlow
+- Keras
+- XGBoost
+- LightGBM
+- Plotly
+- Matplotlib
+- Seaborn
+- yfinance
+- CVXPY
+
+---
+
+# ⚙️ Instalação
+
+Clone o projeto
+
+```bash
+git clone https://github.com/SEU-USUARIO/analise-quantitativa.git
+```
+
+Entre na pasta
+
+```bash
+cd analise-quantitativa
+```
+
+Crie um ambiente virtual
+
+```bash
+python -m venv .venv
+```
+
+Windows
+
+```bash
+.venv\Scripts\activate
+```
+
+Linux / MacOS
+
+```bash
+source .venv/bin/activate
+```
+
+Instale as dependências
+
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+# ▶️ Executando o Projeto
+
+Execute:
+
+```bash
+streamlit run app.py
+```
+
+Após a inicialização, a aplicação abrirá automaticamente no navegador.
+
+---
+
+# 📸 Demonstração
+
+Adicione aqui imagens da aplicação.
+
+Exemplo:
+
+```
+assets/home.png
+
+assets/capm.png
+
+assets/predicao.png
+
+assets/markowitz.png
+```
+
+Ou GIFs demonstrando o funcionamento do sistema.
+
+---
+
+# 📊 Resultados Esperados
+
+O sistema permite:
+
+- avaliar o risco dos ativos;
+- identificar empresas com maior potencial de retorno;
+- prever preços utilizando Inteligência Artificial;
+- validar os modelos;
+- comparar estratégias;
+- construir uma carteira ótima.
+
+Todo esse fluxo ocorre automaticamente em uma única plataforma.
+
+---
+
+# 📚 Metodologia
+
+O projeto foi desenvolvido utilizando uma arquitetura composta por três fases principais.
+
+### Fase I
+
+Avaliação do risco financeiro através dos modelos:
+
+- CAPM
+- Fama-French
+- ARCH/GARCH
+
+### Fase II
+
+Predição dos retornos utilizando:
+
+- Machine Learning
+- Deep Learning
+
+### Fase III
+
+Otimização utilizando:
+
+- Modelo Média-Variância de Markowitz
+
+Cada etapa fornece informações para a etapa seguinte, permitindo uma integração completa entre risco, previsão e otimização.
+
+---
+
+# 🔮 Trabalhos Futuros
+
+Como possíveis evoluções do projeto, destacam-se:
+
+- Inclusão de novos modelos econométricos;
+- Implementação do modelo Black-Litterman;
+- Implementação do Hierarchical Risk Parity (HRP);
+- Uso de dados fundamentalistas;
+- Inclusão de indicadores macroeconômicos;
+- Rebalanceamento automático da carteira;
+- Explicabilidade utilizando SHAP;
+- Publicação da aplicação em ambiente de produção.
+
+---
+
+# 👩‍💻 Autora
 
 **Maria Dionila**
 
-Graduando em  Ciências de Dados para Negocios - Ufpb
+Universidade Federal da Paraíba (UFPB)
 
-Projeto desenvolvido para a disciplina **Tópicos Avançados em Finanças** da Universidade Federal da Paraíba (UFPB).
+Curso de Ciência de Dados para Negócios
+
+Disciplina: **Tópicos Avançados em Finanças**
 
 ---
 
+# 📄 Licença
 
-Este projeto foi desenvolvido para fins acadêmicos.
+Este projeto foi desenvolvido exclusivamente para fins acadêmicos como requisito da disciplina **Tópicos Avançados em Finanças**, da Universidade Federal da Paraíba.

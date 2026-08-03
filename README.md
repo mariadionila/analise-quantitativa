@@ -360,7 +360,7 @@ Bibliotecas:
 Clone o projeto
 
 ```bash
-git clone https://github.com/SEU-USUARIO/analise-quantitativa.git
+git clone https://github.com/mariadionila/analise-quantitativa.git
 ```
 
 Entre na pasta
@@ -404,28 +404,6 @@ streamlit run app.py
 ```
 
 Após a inicialização, a aplicação abrirá automaticamente no navegador.
-
----
-
-# 📸 Demonstração
-
-Adicione aqui imagens da aplicação.
-
-Exemplo:
-
-```
-assets/home.png
-
-assets/capm.png
-
-assets/predicao.png
-
-assets/markowitz.png
-```
-
-Ou GIFs demonstrando o funcionamento do sistema.
-
----
 
 # 📊 Resultados Esperados
 
